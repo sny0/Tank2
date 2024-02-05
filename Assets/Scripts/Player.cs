@@ -5,38 +5,56 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public GameObject bulletPrefab; // 発射する弾
-    public float speed = 5.0f; // 機体の移動スピード
+    public GameObject _bulletPrefab; // 発射する弾
+    public float _speed = 5.0f; // 機体の移動スピード
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
     private GameObject _battery; // 砲台
-    [SerializeField] float _bulletLockTime = 1.0f;
+    
+    [SerializeField]
+    private float _bulletLockTime = 1.0f;
     public int _maxBulletsOnScreen = 5; // 弾を画面に出せる最大数
-    [SerializeField] float _batteryLength = 0.5f; // 砲台の長さ
-    float _lastShotTime = 0.0f;
-    float _time = 0.0f;
+    
+    [SerializeField]
+    private float _batteryLength = 0.5f; // 砲台の長さ
+    private float _lastShotTime = 0.0f;
+    private float _time = 0.0f;
     public int _bulletNum = 0;
 
-    bool _isPaused = false;
-    bool _startPaused = false;
-    bool _isAlive = true;
-    [SerializeField] GameObject _explosion;
+    private bool _isPaused = false;
+    private bool _startPaused = false;
+    private bool _isAlive = true;
+
+    [SerializeField]
+    private GameObject _explosion;
+    
     GameManager _gm = null;
-    [SerializeField] GameObject _cursol;
-    [SerializeField] GameObject _circle;
+    
+    [SerializeField]
+    private GameObject _cursol;
+    
+    [SerializeField]
+    private GameObject _circle;
+    
     GameObject[] _circles;
-    [SerializeField] int _circleNum = 5;
-    [SerializeField] GameObject _youUIPre;
-    GameObject _youUI;
-    // Start is called before the first frame update
-    void Start()
+    
+    [SerializeField]
+    private int _circleNum = 5;
+    
+    [SerializeField]
+    private GameObject _youUIPre;
+    
+    private GameObject _youUI;
+
+ 
+    private void Start()
     {
         _gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (_gm == null)
         {
             Debug.Log("GameManagerが見つかりませんでした。");
         }
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _battery = transform.Find("battery").gameObject;
         _startPaused = true;
         _circles = new GameObject[_circleNum];
@@ -46,11 +64,11 @@ public class Player : MonoBehaviour
         }
         Instantiate(_cursol, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.Euler(Vector3.zero));
 
-        _youUI = Instantiate(_youUIPre, transform.position + new Vector3(0.0f, 1.5f, 0.0f), Quaternion.Euler(Vector3.zero));
+        _youUI = Instantiate(_youUIPre, transform.position + new Vector3(0.0f, 1.5f, -2.0f), Quaternion.Euler(Vector3.zero));
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+
+    private void FixedUpdate()
     {
         // マウスのカーソル位置をスクリーン座標からワールド座標に変換
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -98,15 +116,15 @@ public class Player : MonoBehaviour
         _lastShotTime += Time.deltaTime;
         if (Input.GetMouseButtonDown(0))
         {
-            Shot();
+            Shoot();
         }
     }
 
-    void Shot(){
+    void Shoot(){
         if(_lastShotTime >= _bulletLockTime && _bulletNum < _maxBulletsOnScreen)
         {
             Debug.Log("Shot!!");
-            GameObject bullet = Instantiate(bulletPrefab, transform.position + _batteryLength * new Vector3(Mathf.Cos(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), 0.0f), _battery.transform.rotation);
+            GameObject bullet = Instantiate(_bulletPrefab, transform.position + _batteryLength * new Vector3(Mathf.Cos(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), 0.0f), _battery.transform.rotation);
             _bulletNum++;
             _lastShotTime = 0.0f;
             Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -121,7 +139,7 @@ public class Player : MonoBehaviour
         //Vector3 moveDirection = new Vector3(x, y, 0);
         Vector2 moveDirection = new Vector3(x, y);
         //transform.position += moveDirection * speed * Time.deltaTime;
-        rb.velocity = moveDirection * speed;
+        _rb.velocity = moveDirection * _speed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -137,16 +155,15 @@ public class Player : MonoBehaviour
     {
         _isAlive = false;
         gameObject.SetActive(false);
+        
+        for(int i=0; i<_circleNum; i++)
+        {
+            _circles[i].SetActive(false);
+        }
+        
         Instantiate(_explosion, transform.position, transform.rotation);
     }
 
-    IEnumerator PauseForSeconds(float time)
-    {
-        Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(time);
-
-        Time.timeScale = 1f;
-    }
 
     public bool isAlive()
     {

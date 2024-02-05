@@ -14,6 +14,7 @@ public class Player2 : Tank
 
     protected override void Update()
     {
+        /*
         if (_isStart)
         {
             _tankBrain.Think();
@@ -31,5 +32,11 @@ public class Player2 : Tank
 
             _tankBody.Move(_tankBrain.MoveVec);
         }
+        */
+        _tankBrain.Think();
+        _tankBody.Move(_tankBrain.MoveVec);
+        _tankBody.TurretRotate(_tankBrain.TurretRot_deg);
+        _tankBody.Shoot(_tankBrain.IsShoot);
+
     }
 }

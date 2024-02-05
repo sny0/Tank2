@@ -42,10 +42,19 @@ public class EnemyBrain : TankBrain
     protected float[] _turretToWallRot = new float[4];
     protected Vector2[,] _wallsPos = new Vector2[4, 2];
 
+    [SerializeField]
+    private GameObject _bikkuriPrefab;
+
+    private bool _isBikkuriActive = false;
+
+    [SerializeField]
+    private Vector3 _bikkuriOffset;
+
     protected enum DetectedSensor
     {
         None,
         Scope,
+     
         Sonar
     }
 
@@ -58,6 +67,20 @@ public class EnemyBrain : TankBrain
     }
 
     protected EnemyState _enemyState;
+
+    [SerializeField]
+    private float _timeUntilLossOfSight = 0.5f;
+
+    private float _lossOfSightTimer = 0f;
+
+
+    private bool _isFindPlayer = false;
+
+    private float _findPlayerLockTime = 1f;
+
+    private float _findPlayerTimer = 0f;
+
+    private bool _canFindPlayer = true;
 
     protected override void Start()
     {
@@ -92,10 +115,16 @@ public class EnemyBrain : TankBrain
         switch (_enemyState)
         {
             case EnemyState.Searching:
+                //_isFindPlayer = false;
                 Search();
                 break;
 
             case EnemyState.Attacking:
+                //if (!_isFindPlayer && _canFindPlayer)
+                //{
+                //    FoundPlayer();
+
+                //}
                 Attack();
                 break;
         }
@@ -103,14 +132,17 @@ public class EnemyBrain : TankBrain
 
     protected void Search()
     {
-        if (IsPlayerInVision()){
+        if (IsPlayerInVision())
+        {
             _enemyState = EnemyState.Attacking;
             _detectedSensor = DetectedSensor.Scope;
+            FoundPlayer();
         }
         else if (IsPlayerWithinSearchRange())
         {
             _enemyState = EnemyState.Attacking;
             _detectedSensor = DetectedSensor.Sonar;
+            FoundPlayer();
         }
 
     }
@@ -119,15 +151,22 @@ public class EnemyBrain : TankBrain
         if (IsPlayerInVision())
         {
             _detectedSensor = DetectedSensor.Scope;
+            _lossOfSightTimer = 0f;
         }
         else if (IsPlayerWithinSearchRange())
         {
             _detectedSensor = DetectedSensor.Sonar;
+            _lossOfSightTimer = 0f;
         }
         else
         {
-            _enemyState = EnemyState.Searching;
-            _detectedSensor = DetectedSensor.None;
+            _lossOfSightTimer += Time.deltaTime;
+
+            if(_lossOfSightTimer >= _timeUntilLossOfSight)
+            {
+                _enemyState = EnemyState.Searching;
+                _detectedSensor = DetectedSensor.None;
+            }
         }
     }
 
@@ -426,5 +465,26 @@ public class EnemyBrain : TankBrain
         Vector2 reflectedPoint = point - 2 * dotProduct * lineNormal / lineNormal.sqrMagnitude;
 
         return reflectedPoint;
+    }
+
+    private void FoundPlayer()
+    {
+        Instantiate(_bikkuriPrefab, transform.position + _bikkuriOffset, Quaternion.identity);
+        _isFindPlayer = true;
+        _findPlayerTimer = 0f;
+        _canFindPlayer = false;
+    }
+
+    private void Update()
+    {
+        if (!_canFindPlayer)
+        {
+            _findPlayerTimer += Time.deltaTime;
+            
+            if(_findPlayerTimer >= _findPlayerLockTime)
+            {
+                _canFindPlayer = true;
+            }
+        }
     }
 }

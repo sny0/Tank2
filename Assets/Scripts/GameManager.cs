@@ -6,48 +6,48 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    TextMeshProUGUI _tmpRemain = null;
-    TextMeshProUGUI _tmpStage = null;
+    private TextMeshProUGUI _tmpRemain = null;
+    private TextMeshProUGUI _tmpStage = null;
 
-    [SerializeField] int _stageNum = 5;
+    [SerializeField]
+    private int _stageNum = 10;
 
-    int _remain;
-    int _stage;
+    private int _remain;
+    private int _stage;
 
-    GameObject _player = null;
-    Player _playerPlayer = null;
+    private GameObject _player = null;
+    private Player _playerPlayer = null;
 
-    [SerializeField] List<GameObject> _enemies;
-    [SerializeField] GameObject[] allGameObjects;
-    [SerializeField] float _afterglowTime = 1.5f;
-    [SerializeField] float _startSCSETime = 0.8f;
-    [SerializeField] AudioClip _reflectSE;
-    [SerializeField] float _reflectSEGain = 0.6f;
-    [SerializeField] AudioClip _destroySE;
-    [SerializeField] float _destroySEGain = 0.0f;
-    [SerializeField] AudioClip _explosionSE;
-    [SerializeField] float _explosionSEGain = 1.0f;
-    [SerializeField] AudioClip _stageClearSE;
-    [SerializeField] float _stageClearSEGain = 0.0f;
-    [SerializeField] AudioClip _failureSE;
-    [SerializeField] float _failureSEGain = 0.8f;
-    [SerializeField] AudioClip _shotSE;
-    [SerializeField] float _shotSEGain = 1.0f;
-    [SerializeField] GameObject _bulletUI;
-    GameObject[] _bulletUIs;
+    [SerializeField]
+    private List<GameObject> _enemies;
+    
+    [SerializeField] 
+    private GameObject[] allGameObjects;
+    
+    [SerializeField]
+    private float _afterglowTime = 1.5f;
+    
+    [SerializeField]
+    private float _startSCSETime = 0.8f;
+   
+    
+    [SerializeField]
+    private GameObject _bulletUI;
+    
+    private GameObject[] _bulletUIs;
 
-    bool _isStageClear = false;
-    bool _isFailure = false;
-    bool _isRingSCSE = false;
-    bool _isRingFSE = false;
-    float _stageClearTimer = 0.0f;
-    float _failureTimer = 0.0f;
-    AudioSource _audioSource;
+    private bool _isStageClear = false;
+    private bool _isFailure = false;
+    private bool _isRingSCSE = false;
+    private bool _isRingFSE = false;
+    private float _stageClearTimer = 0.0f;
+    private float _failureTimer = 0.0f;
+    
+    private AudioManager _audioManager = null;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
         _remain = GameData._remain;
         _stage = GameData._stage;
 
@@ -66,6 +66,13 @@ public class GameManager : MonoBehaviour
 
         _tmpRemain.text = "REMAIN:" + _remain.ToString();
         _tmpStage.text = "STAGE:" + _stage.ToString();
+
+        _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
+        if(_audioManager == null)
+        {
+            Debug.Log("AudioManagerÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
+        }
 
         int tankLayerMask = LayerMask.GetMask("Tank");
         int playerLayerMask = LayerMask.GetMask("Player");
@@ -88,12 +95,12 @@ public class GameManager : MonoBehaviour
         _bulletUIs = new GameObject[_playerPlayer._maxBulletsOnScreen];
         for(int i=0; i<_playerPlayer._maxBulletsOnScreen; i++)
         {
-            _bulletUIs[i] = Instantiate(_bulletUI, new Vector3(-10f + 1.0f * i, -5.7f, 0.0f), Quaternion.EulerAngles(Vector3.zero));
+            _bulletUIs[i] = Instantiate(_bulletUI, new Vector3(0f + 1.5f * i, -5.7f, 0.0f), Quaternion.EulerAngles(Vector3.zero));
         }
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //Debug.Log(GameData._remain);
         _remain = GameData._remain;
@@ -172,7 +179,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("GameOver");
             GameData._comment = "Game Over! You Have Been Defeated at Stage" + _stage.ToString() + ".";
-            SceneManager.LoadScene("Title");
+            SceneManager.LoadScene("Result");
         }
     }
 
@@ -190,48 +197,47 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void ClearGame()
+    private void ClearGame()
     {
         Debug.Log("Clear!");
         GameData._comment = "Congratulations! You Have Cleared This Game!";
-        SceneManager.LoadScene("Title");
+        GameData._isClear = true;
+        SceneManager.LoadScene("Result");
     }
 
     public void ReflectSE()
     {
-        _audioSource.volume = GameData._seVolume * _reflectSEGain;
-        _audioSource.PlayOneShot(_reflectSE);
+        _audioManager.ReflectSE();
     }
 
     public void DestroySE()
     {
-        _audioSource.volume = GameData._seVolume * _destroySEGain;
-        Debug.Log("destroySe:" + _audioSource.volume);
-        _audioSource.PlayOneShot(_destroySE);
+        _audioManager.DestroySE();
     }
     
     public void ExplosionSE()
     {
-        _audioSource.volume = GameData._seVolume * _explosionSEGain;
-        _audioSource.PlayOneShot(_explosionSE);
+        _audioManager.ExplosionSE();
     }
 
     public void FailureSE()
     {
-        _audioSource.volume = GameData._seVolume * _failureSEGain;
-        _audioSource.PlayOneShot(_failureSE);
+        _audioManager.FailureSE();
     }
 
     public void StageClearSE()
     {
-        _audioSource.volume = GameData._seVolume * _stageClearSEGain;
-        _audioSource.PlayOneShot(_stageClearSE);
+        _audioManager.StageClearSE();
     }
 
     public void ShotSE()
     {
-        _audioSource.volume = GameData._seVolume * _shotSEGain;
-        _audioSource.PlayOneShot(_shotSE);
+        _audioManager.ShotSE();
+    }
+
+    public void FindSE()
+    {
+        _audioManager.FindSE();
     }
 
     private void ChangeBulletUI()

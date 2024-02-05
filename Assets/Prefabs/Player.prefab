@@ -263,8 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9cf9ef5eb71994881eb421bd8e0af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 2993762926168516143, guid: 07accee91907d6d4385c3573ca488fe0, type: 3}
-  speed: 2
+  _bulletPrefab: {fileID: 2993762926168516143, guid: 07accee91907d6d4385c3573ca488fe0, type: 3}
+  _speed: 2
   _bulletLockTime: 0.3
   _maxBulletsOnScreen: 5
   _batteryLength: 1
@@ -272,5 +272,5 @@ MonoBehaviour:
   _explosion: {fileID: 9184625550049570847, guid: 39f003bd5cc022f46b59bec6a3e96619, type: 3}
   _cursol: {fileID: 397756445561150646, guid: 853ab7963934a794e96a51ba56f08b33, type: 3}
   _circle: {fileID: 1303087771763902668, guid: dfa8a0eca21c0404b9e4536730bfd0c4, type: 3}
-  _circleNum: 5
+  _circleNum: 7
   _youUIPre: {fileID: 8808622513126410997, guid: 5f7936bdcfde85c4da863ecd08c4ee28, type: 3}

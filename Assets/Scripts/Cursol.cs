@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Cursol : MonoBehaviour
 {
+    [SerializeField]
+    private Vector3 _offset;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +18,6 @@ public class Cursol : MonoBehaviour
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition = new Vector3(mousePosition.x, mousePosition.y, 0.0f);
-        transform.position = mousePosition;
+        transform.position = mousePosition + _offset;
     }
 }

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    GameObject[] _countDown;
+    private GameObject[] _countDown;
 
-    float _time;
-    // Start is called before the first frame update
-    void Start()
+    private float _time;
+
+    private void Start()
     {
 
         _countDown = new GameObject[4];
@@ -21,8 +21,7 @@ public class UIManager : MonoBehaviour
         SetAllCountDownNotActive();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         _time += Time.deltaTime;
         SetAllCountDownNotActive();
@@ -41,7 +40,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SetAllCountDownNotActive()
+    private void SetAllCountDownNotActive()
     {
         for(int i=0; i<_countDown.Length; i++)
         {
@@ -52,7 +51,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SetCountDownActive(int i)
+    private void SetCountDownActive(int i)
     {
         if(0 <= i && i < _countDown.Length)
         {

@@ -28,7 +28,8 @@ public class TankBody : MonoBehaviour
 
     public void Move(Vector2 moveVec)
     {
-        _rb.velocity = _movementSpeed * moveVec;
+        //_rb.velocity = _movementSpeed * moveVec;
+        _rb.velocity = moveVec;
     }
 
     public void TurretRotate(float angle_deg)

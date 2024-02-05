@@ -5,21 +5,30 @@ using UnityEngine.UI;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] float _bulletSpeed = 1.0f; // 弾のスピード
+    [SerializeField]
+    private float _bulletSpeed = 1.0f; // 弾のスピード
+    
     private int _collisionNum = 0; // 衝突回数
-    [SerializeField] int _maxReflectNum = 2; // 最大衝突（反射）回数
+    
+    [SerializeField]
+    private int _maxReflectNum = 2; // 最大衝突（反射）回数
+    
     private Rigidbody2D rb;
 
-    Vector2 m_velocity; // 速さベクトル
+    private Vector2 m_velocity; // 速さベクトル
 
-    [SerializeField] GameObject _tri;
-    MapManager _mm; // MapManager
+    [SerializeField]
+    private GameObject _tri;
+    
+    private MapManager _mm; // MapManager
     public int[,] _bulletMap; // 期待値マップ
-    bool flag = true;
+    private bool flag = true;
 
-    GameObject _parent = null; // 弾を出したオブジェクト
-    GameManager _gm = null;
-    [SerializeField] GameObject _hibana;
+    private GameObject _parent = null; // 弾を出したオブジェクト
+    private GameManager _gm = null;
+
+    [SerializeField] 
+    private GameObject  _hibana;
     // Start is called before the first frame update
     void Start()
     {
@@ -86,10 +95,12 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.B))
         {
             _mm.PrintMap(_bulletMap);
         }
+        */
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

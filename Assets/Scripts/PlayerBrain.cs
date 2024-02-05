@@ -18,7 +18,17 @@ public class PlayerBrain : TankBrain
 
     private int _bulletNumOnScreen = 0;
 
+    private enum DemoPlayerState
+    {
+        MoveRight,
+        MoveLeft,
+        MoveUp,
+        MoveDown,
+        Rotate,
+        Shoot
+    }
 
+    private DemoPlayerState _demoPlayerState = DemoPlayerState.MoveRight;
 
     protected override void Start()
     {
@@ -37,12 +47,41 @@ public class PlayerBrain : TankBrain
 
     protected override void ThinkNextMove()
     {
-        Vector2 inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 inputVector = new Vector2(0f, 0f);
+
+        switch (_demoPlayerState)
+        {
+            case DemoPlayerState.MoveRight:
+                inputVector = new Vector2(1.0f, 0f);
+                break;
+
+            case DemoPlayerState.MoveLeft:
+                inputVector = new Vector2(-1.0f, 0f);
+                break;
+
+            case DemoPlayerState.MoveUp:
+                inputVector = new Vector2(0f, 1.0f);
+                break;
+
+            case DemoPlayerState.MoveDown:
+                inputVector = new Vector2(0f, -1.0f);
+                break;
+        }
+        //Vector2 inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         _moveVec = inputVector * _maxMovementVelo;
     }
 
     protected override void ThinkTurretRot()
     {
+        if(_demoPlayerState == DemoPlayerState.Rotate)
+        {
+
+        }
+        else
+        {
+
+        }
+
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Vector3 lookDirection = mousePosition - transform.position;
@@ -53,6 +92,7 @@ public class PlayerBrain : TankBrain
 
     protected override void ThinkToShoot()
     {
+        _isShoot = false;
         if (_isBulletLock)
         {
             _timeSinceLastShot += Time.deltaTime;
@@ -66,9 +106,9 @@ public class PlayerBrain : TankBrain
             }
         }
 
-        if(_bulletNumOnScreen < _maxBulletNumOnScreen && !_isBulletLock)
+        if(!_isBulletLock)
         {
-
+            _isShoot = true;
         }
     }
 

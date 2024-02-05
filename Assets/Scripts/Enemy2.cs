@@ -6,7 +6,7 @@ public class Enemy2 : Tank
 {
     protected override void Start()
     {
-        _tankBrain = GetComponent<TankBrain>();
+        _tankBrain = GetComponent<EnemyBrain>();
         _tankBody = GetComponent<TankBody>();
 
         base.Start();
@@ -17,6 +17,7 @@ public class Enemy2 : Tank
         if (_isStart)
         {
             _tankBrain.Think();
+
             _tankBody.Move(_tankBrain.MoveVec);
             _tankBody.TurretRotate(_tankBrain.TurretRot_deg);
             _tankBody.Shoot(_tankBrain.IsShoot);
@@ -31,4 +32,5 @@ public class Enemy2 : Tank
         }
 
     }
+
 }

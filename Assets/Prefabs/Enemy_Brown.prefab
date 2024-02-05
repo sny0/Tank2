@@ -252,10 +252,16 @@ MonoBehaviour:
   _sonarSearchRadius: 3
   _bulletLockTime: 2
   _shootProbability: 10
-  _turretRotationVelo_Searching_deg: 90
+  _bikkuriPrefab: {fileID: 2161000519439974640, guid: 987db6e860091354288635c5d3bd0a19, type: 3}
+  _bikkuriOffset: {x: 0, y: 0.7, z: -1}
+  _timeUntilLossOfSight: 0.5
+  _turretRotationVelo_Searching_deg: 360
   _isClockwise: 0
   _turretRotationVelo_Attacking_deg: 60
-  _lowExpectationGridMoveProbability: 5
+  _randomMoveProbability: 3
+  _continuousMovementTime: 0.6
+  _movementSpeed_Searching: 2
+  _movementSpeed_Attacking: 2.5
 --- !u!114 &672693720268534043
 MonoBehaviour:
   m_ObjectHideFlags: 0

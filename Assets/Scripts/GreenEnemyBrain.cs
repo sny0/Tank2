@@ -110,42 +110,5 @@ public class GreenEnemyBrain : EnemyBrain
     protected override void ThinkToShoot_Attacking()
     {
         base.ThinkToShoot_Attacking();
-        /*
-        _isShoot = false;
-        if (_isBulletLock)
-        {
-            _timeSinceLastShot += Time.deltaTime;
-            if (_timeSinceLastShot >= _bulletLockTime)
-            {
-                _isBulletLock = false;
-            }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
-            if (_isAiming)
-            {
-                _isAiming = false;
-                _isShoot = true;
-                _isBulletLock = true;
-                _timeSinceLastShot = 0f;
-                return;
-            }
-        }
-
-
-        if(!_isAimingDetermined)
-        {
-            int randomNum = Random.RandomRange(1, 100);
-            if(randomNum <= _shootProbability)
-            {
-                _isAimingDetermined = true;
-                _angleToDeterminedAiming_deg = _angleToPlayer_scope;
-            }
-        }
-        */
     }
 }

@@ -16,7 +16,22 @@ public class BrownEnemyBrain : EnemyBrain
     private MapManager _mm = null;
 
     [SerializeField]
-    private int _lowExpectationGridMoveProbability = 5; // 期待値が低いグリッドへ移動する確率（未実装）
+    private int _randomMoveProbability = 5; // ランダムな方向へ移動する確率（未実装）
+
+    [SerializeField]
+    private float _continuousMovementTime = 0.2f;
+
+    private float _movementTimer = 0f;
+
+    private bool _canThinkNextMovement = true;
+
+    private Vector2 _destinationPos;
+
+    [SerializeField]
+    private float _movementSpeed_Searching = 1f;
+
+    [SerializeField]
+    private float _movementSpeed_Attacking = 1.5f;
 
     protected override void Start()
     {
@@ -30,12 +45,72 @@ public class BrownEnemyBrain : EnemyBrain
 
     protected override void ThinkNextMove_Attacking()
     {
-        _moveVec = LookAtMap();
+        if (!_canThinkNextMovement)
+        {
+
+        }
+
+        if (_canThinkNextMovement)
+        {
+            _destinationPos = LookAtMap();
+            _canThinkNextMovement = false;
+
+            _movementTimer = 0f;
+
+            Vector2 hereToDestination = new Vector2(_destinationPos.x - transform.position.x, _destinationPos.y - transform.position.y);
+            _continuousMovementTime = hereToDestination.magnitude / _movementSpeed_Attacking;
+            _moveVec = hereToDestination.normalized * _movementSpeed_Attacking;
+        }
+        else
+        {
+            _movementTimer += Time.deltaTime;
+            if (_continuousMovementTime <= _movementTimer)
+            {
+                _canThinkNextMovement = true;
+            }
+        }
     }
 
     protected override void ThinkNextMove_Searching()
     {
-        _moveVec = LookAtMap();
+        if (!_canThinkNextMovement)
+        {
+
+        }
+
+        if (_canThinkNextMovement)
+        {
+            _destinationPos = LookAtMap();
+            _canThinkNextMovement = false;
+
+            _movementTimer = 0f;
+
+            Vector2 hereToDestination = new Vector2(_destinationPos.x - transform.position.x, _destinationPos.y - transform.position.y);
+            _continuousMovementTime = hereToDestination.magnitude / _movementSpeed_Searching;
+
+            _moveVec = hereToDestination.normalized * _movementSpeed_Searching;
+        }
+        else
+        {
+            _movementTimer += Time.deltaTime;
+            if(_continuousMovementTime <= _movementTimer)
+            {
+                _canThinkNextMovement = true;
+            }
+        }
+
+
+        /*
+        if (hereToDestination.magnitude > _movementSpeed * Time.deltaTime)
+        {
+            _moveVec = hereToDestination.normalized * _movementSpeed;
+        }
+        else
+        {
+            _moveVec = hereToDestination;
+            _canThinkNextMovement = true;
+        }
+        */
     }
 
     protected override void ThinkTurretRot_Searching()
@@ -135,6 +210,8 @@ public class BrownEnemyBrain : EnemyBrain
         int[] dx = { 0, -1, -1, 0, 1, 1, 1, 0, -1 };
         int[] dy = { 0, 0, -1, -1, -1, 0, 1, 1, 1 };
 
+        string debugcomment;
+
         int[] nowPos = { -Mathf.FloorToInt(transform.position.y) + exceptMap.GetLength(0) / 2 - 1, Mathf.FloorToInt(transform.position.x) + exceptMap.GetLength(1) / 2 };
         int x = 1, y = 0;
 
@@ -157,26 +234,54 @@ public class BrownEnemyBrain : EnemyBrain
         int exceptedId = 0;
         List<int> exceptedIdList = new List<int>();
 
-        for (int i = 0; i < 9; i++)
+        if(Random.Range(0, 100) <= _randomMoveProbability)
         {
-            if (exceptedArrow[i] == 0)
+            for(int i=0; i<9; i++)
             {
-                exceptedId = i;
-                exceptedIdList.Add(i);
-            }
-            else
-            {
-                if (exceptedArrow[exceptedId] < exceptedArrow[i])
+                if(exceptedArrow[i] != -1)
                 {
-                    exceptedIdList.Clear();
+                    exceptedIdList.Add(i);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                if (exceptedArrow[i] == 0)
+                {
                     exceptedId = i;
                     exceptedIdList.Add(i);
+                }
+            }
+
+            if (exceptedIdList.Count == 0)
+            {
+                exceptedId = 0;
+                for (int i = 1; i < 9; i++)
+                {
+                    if (exceptedArrow[exceptedId] < exceptedArrow[i])
+                    {
+                        exceptedIdList.Clear();
+                        exceptedId = i;
+                        exceptedIdList.Add(i);
+                    }
+                    else if (exceptedArrow[exceptedId] == exceptedArrow[i])
+                    {
+                        exceptedIdList.Add(i);
+                    }
                 }
             }
         }
 
         exceptedId = exceptedIdList[Random.Range(0, exceptedIdList.Count)];
-        Vector2 hereToDestination = new Vector2((float)(nowPos[x] + dx[exceptedId]) - exceptMap.GetLength(1) / 2 + 0.5f, - (float)(nowPos[y] + dy[exceptedId]) + exceptMap.GetLength (0) / 2 - 0.5f) - new Vector2(transform.position.x, transform.position.y);
-        return hereToDestination;
+        //Vector2 hereToDestination = new Vector2((float)(nowPos[x] + dx[exceptedId]) - exceptMap.GetLength(1) / 2 + 0.5f, - (float)(nowPos[y] + dy[exceptedId]) + exceptMap.GetLength (0) / 2 - 0.5f) - new Vector2(transform.position.x, transform.position.y);
+        Vector2 destinationPos = new Vector2((float)(nowPos[x] + dx[exceptedId]) - exceptMap.GetLength(1) / 2 + 0.5f, -(float)(nowPos[y] + dy[exceptedId]) + exceptMap.GetLength(0) / 2 - 0.5f);
+
+        //_mm.PrintMap(exceptMap);
+        //Debug.Log("");
+        //_mm.PrintMap(objMap);
+        return destinationPos;
     }
+
 }

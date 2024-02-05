@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    int[,] _objMap; // オブジェクトのマップ（-1:壁, 1:障害物, 0:何もなし)
-    int[,] _expectedMap; // 期待値マップ（-1:壁, 0:安全, n(>0):nフレーム後にBulletが飛んでくる）
-    List<Bullet> _bullets; // 画面上に存在するBulletを保持
+    private int[,] _objMap; // オブジェクトのマップ（-1:壁, 1:障害物, 0:何もなし)
+    private int[,] _expectedMap; // 期待値マップ（-1:壁, 0:安全, n(>0):nフレーム後にBulletが飛んでくる）
+    private List<Bullet> _bullets; // 画面上に存在するBulletを保持
 
-    List<GameObject> _obstacles;
+    private List<GameObject> _obstacles;
     // Start is called before the first frame update
     void Start()
     {
@@ -101,12 +101,12 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        /*
-        if (Input.GetKeyDown(KeyCode.A))
+        
+        if (Input.GetKeyDown(KeyCode.Z))
         {
             PrintMap(_expectedMap);
         }
-        */
+        
     }
 
     public void PrintMap(int[,] map)

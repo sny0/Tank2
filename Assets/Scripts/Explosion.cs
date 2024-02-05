@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    [SerializeField] float _livingTime = 1.5f;
+    [SerializeField] 
+    private float _livingTime = 1.5f;
+
     float _timer = 0.0f;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         _timer += Time.deltaTime;
         if(_timer >= _livingTime)

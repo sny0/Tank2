@@ -7,7 +7,7 @@ public abstract class Tank : MonoBehaviour
     [SerializeField]
     private GameObject _explosionPrefab;
 
-    int _health = 1;
+    private int _health = 1;
 
     protected TankBrain _tankBrain;
     protected TankBody _tankBody;
