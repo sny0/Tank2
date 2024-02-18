@@ -9,9 +9,6 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI _tmpRemain = null;
     private TextMeshProUGUI _tmpStage = null;
 
-    [SerializeField]
-    private int _stageNum = 10;
-
     private int _remain;
     private int _stage;
 
@@ -30,11 +27,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float _startSCSETime = 0.8f;
    
-    
     [SerializeField]
     private GameObject _bulletUI;
+
+    [SerializeField]
+    private GameObject _superBulletUI;
     
     private GameObject[] _bulletUIs;
+
+    private TextMeshProUGUI _tmpBulletNum= null;
 
     private bool _isStageClear = false;
     private bool _isFailure = false;
@@ -45,6 +46,12 @@ public class GameManager : MonoBehaviour
     
     private AudioManager _audioManager = null;
     
+    public enum Scene
+    {
+        Title,
+        MainGame
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -53,6 +60,7 @@ public class GameManager : MonoBehaviour
 
         _tmpRemain =  GameObject.Find("Remain").GetComponent<TextMeshProUGUI>();
         _tmpStage =  GameObject.Find("Stage").GetComponent<TextMeshProUGUI>();
+        _tmpBulletNum = GameObject.Find("BulletNum").GetComponent<TextMeshProUGUI>();
 
         if(_tmpRemain == null)
         {
@@ -62,6 +70,11 @@ public class GameManager : MonoBehaviour
         if(_tmpStage == null)
         {
             Debug.Log("Stage UIÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
+        }
+
+        if(_tmpBulletNum == null)
+        {
+            Debug.Log("Bullet Num Ç™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
         }
 
         _tmpRemain.text = "REMAIN:" + _remain.ToString();
@@ -92,16 +105,39 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        _bulletUIs = new GameObject[_playerPlayer._maxBulletsOnScreen];
-        for(int i=0; i<_playerPlayer._maxBulletsOnScreen; i++)
+        _bulletUIs = new GameObject[5];
+        GameObject bulletPrefab;
+        if (GameData._isNormalBullet)
         {
-            _bulletUIs[i] = Instantiate(_bulletUI, new Vector3(0f + 1.5f * i, -5.7f, 0.0f), Quaternion.EulerAngles(Vector3.zero));
+            bulletPrefab = _bulletUI;
+        }
+        else
+        {
+            bulletPrefab = _superBulletUI;
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            _bulletUIs[i] = Instantiate(bulletPrefab, new Vector3(0f + 1.5f * i, -5.7f, 0.0f), Quaternion.EulerAngles(Vector3.zero));
+        }
+
+        if (!GameData._isExtra)
+        {
+            _audioManager.PlayBGM(GameManager.Scene.MainGame, TitleManager.Mode.Normal);
+        }
+        else
+        {
+            _audioManager.PlayBGM(GameManager.Scene.MainGame, TitleManager.Mode.Extra);
         }
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha9)){
+            GameData._stage = 9;
+            SceneManager.LoadScene("Stage9");
+        }
         //Debug.Log(GameData._remain);
         _remain = GameData._remain;
         _stage = GameData._stage;
@@ -173,7 +209,14 @@ public class GameManager : MonoBehaviour
         if(_remain > 1)
         {
             GameData._remain -= 1;
-            SceneManager.LoadScene("Stage" + _stage.ToString());
+            if (!GameData._isExtra)
+            {
+                SceneManager.LoadScene("Stage" + _stage.ToString());
+            }
+            else
+            {
+                SceneManager.LoadScene("ExtraStage" + _stage.ToString());
+            }
         }
         else
         {
@@ -185,15 +228,30 @@ public class GameManager : MonoBehaviour
 
     public void ClearStage()
     {
-        if(_stageNum > _stage)
+        if (!GameData._isExtra)
         {
+            if (GameData._maxStage > _stage)
+            {
 
-            GameData._stage += 1;
-            SceneManager.LoadScene("Stage" + (_stage + 1).ToString());
+                GameData._stage += 1;
+                SceneManager.LoadScene("Stage" + (_stage + 1).ToString());
+            }
+            else
+            {
+                ClearGame();
+            }
         }
         else
         {
-            ClearGame();
+            if(GameData._maxExtraStage > _stage)
+            {
+                GameData._stage += 1;
+                SceneManager.LoadScene("ExtraStage" + (_stage + 1).ToString());
+            }
+            else
+            {
+                ClearGame();
+            }
         }
     }
 
@@ -242,14 +300,25 @@ public class GameManager : MonoBehaviour
 
     private void ChangeBulletUI()
     {
-        for(int i=0; i<_playerPlayer._maxBulletsOnScreen; i++)
+        for(int i=0; i<5; i++)
         {
             _bulletUIs[i].SetActive(false);
+            _tmpBulletNum.text = "";
         }
 
-        for(int i=0; i<_playerPlayer._maxBulletsOnScreen - _playerPlayer._bulletNum; i++)
+        int remainBullet = GameData._maxBulletRemain - _playerPlayer.BulletNum;
+
+        if (remainBullet > 5)
         {
-            _bulletUIs[i].SetActive(true);
+            _bulletUIs[0].SetActive(true);
+            _tmpBulletNum.text = "X " + remainBullet.ToString();
+        }
+        else
+        {
+            for (int i = 0; i < remainBullet; i++)
+            {
+                _bulletUIs[i].SetActive(true);
+            }
         }
     }
 }

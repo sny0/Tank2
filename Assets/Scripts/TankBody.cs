@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class TankBody : MonoBehaviour
 {
-    [SerializeField]
-    protected float _movementSpeed = 1f;
-
     protected Rigidbody2D _rb;
     protected GameObject _turret = null;
+
     [SerializeField]
     protected float _turretLength = 1f;
+    
     [SerializeField]
     protected GameObject _bulletPrefab;
 
-    protected void Start()
+    protected virtual void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _turret = transform.Find("battery").gameObject;
@@ -23,6 +22,11 @@ public class TankBody : MonoBehaviour
         {
             Debug.Log("batteryÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
         }
+
+    }
+
+    public virtual void UpdateBody()
+    {
 
     }
 

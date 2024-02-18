@@ -48,7 +48,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSourceBGM: {fileID: 7061516012369230219}
   _audioSourceSE: {fileID: 7061516012369230218}
-  _bgmGain: 0.8
+  _normalTitleBGM: {fileID: 8300000, guid: 23b7ff42859305b4fad41c150ae8bd9b, type: 3}
+  _extraTitleBGM: {fileID: 8300000, guid: d0366a16e9096d74c99a7ccc7744c91e, type: 3}
+  _normalGameBGM: {fileID: 8300000, guid: fcb6fc5bf8791334093fad68f6c17e05, type: 3}
+  _extraGameBGM: {fileID: 8300000, guid: 2964372333778934d891dc9173ebb225, type: 3}
+  _normalTitleBgmGain: 1
+  _extraTitleBgmGain: 0.7
+  _normalGameBgmGain: 1
+  _extraGameBgmGain: 0.3
   _reflectSE: {fileID: 8300000, guid: 945f05db4888cfb418905119d8f33e91, type: 3}
   _reflectSEGain: 0.6
   _destroySE: {fileID: 8300000, guid: ec222802acb8c3f4aaeafc5ebda1da8e, type: 3}
@@ -73,7 +80,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: fcb6fc5bf8791334093fad68f6c17e05, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

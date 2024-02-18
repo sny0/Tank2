@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b993c27e4f3d3459684e632c8e4099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stageNum: 6
   _enemies: []
   allGameObjects: []
   _afterglowTime: 1.5
   _startSCSETime: 0.8
   _bulletUI: {fileID: 1153846452970950836, guid: 7aa92ea1f08a2bf45b0909a96c907daf, type: 3}
+  _superBulletUI: {fileID: 1153846452970950836, guid: eba267c5a554f564080d9b209d209323, type: 3}

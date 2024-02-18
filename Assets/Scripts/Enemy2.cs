@@ -18,6 +18,7 @@ public class Enemy2 : Tank
         {
             _tankBrain.Think();
 
+            _tankBody.UpdateBody();
             _tankBody.Move(_tankBrain.MoveVec);
             _tankBody.TurretRotate(_tankBrain.TurretRot_deg);
             _tankBody.Shoot(_tankBrain.IsShoot);

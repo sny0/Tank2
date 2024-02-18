@@ -11,8 +11,28 @@ public class AudioManager : MonoBehaviour
     private AudioSource _audioSourceSE;
 
     [SerializeField]
-    private float _bgmGain = 1f;
+    private AudioClip _normalTitleBGM;
 
+    [SerializeField]
+    private AudioClip _extraTitleBGM;
+
+    [SerializeField]
+    private AudioClip _normalGameBGM;
+
+    [SerializeField]
+    private AudioClip _extraGameBGM;
+
+    [SerializeField]
+    private float _normalTitleBgmGain = 1f;
+
+    [SerializeField]
+    private float _extraTitleBgmGain = 1f;
+
+    [SerializeField]
+    private float _normalGameBgmGain = 1f;
+
+    [SerializeField]
+    private float _extraGameBgmGain = 1f;
 
     [SerializeField]
     private AudioClip _reflectSE;
@@ -56,10 +76,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private float _findSEGain = 1.0f;
 
-    private void Start()
-    {
-        UpdateBGM();
-    }
 
     public void ReflectSE()
     {
@@ -104,8 +120,75 @@ public class AudioManager : MonoBehaviour
         _audioSourceSE.PlayOneShot(_findSE);
     }
 
-    public void UpdateBGM()
+    public void UpdateBGM(GameManager.Scene scene, TitleManager.Mode mode)
     {
-        _audioSourceBGM.volume = GameData._bgmVolume * _bgmGain;
+        switch (scene)
+        {
+            case GameManager.Scene.Title:
+                switch (mode)
+                {
+                    case TitleManager.Mode.Normal:
+                        _audioSourceBGM.volume = GameData._bgmVolume * _normalTitleBgmGain;
+                        break;
+
+                    case TitleManager.Mode.Extra:
+                        _audioSourceBGM.volume = GameData._bgmVolume * _extraTitleBgmGain;
+                        break;
+                }
+                break;
+
+            case GameManager.Scene.MainGame:
+                switch (mode)
+                {
+                    case TitleManager.Mode.Normal:
+                        _audioSourceBGM.volume = GameData._bgmVolume * _normalGameBgmGain;
+                        break;
+
+                    case TitleManager.Mode.Extra:
+                        _audioSourceBGM.volume = GameData._bgmVolume * _extraGameBgmGain;
+                        break;
+                }
+                break;
+        }
+    }
+
+    public void StopBGM()
+    {
+        _audioSourceBGM.Stop();
+    }
+
+    public void PlayBGM(GameManager.Scene scene, TitleManager.Mode mode)
+    {
+        switch (scene)
+        {
+            case GameManager.Scene.Title:
+                switch (mode)
+                {
+                    case TitleManager.Mode.Normal:
+                        _audioSourceBGM.clip = _normalTitleBGM;
+                        _audioSourceBGM.volume = GameData._bgmVolume * _normalTitleBgmGain;
+                        break;
+                    case TitleManager.Mode.Extra:
+                        _audioSourceBGM.clip = _extraTitleBGM;
+                        _audioSourceBGM.volume = GameData._bgmVolume * _extraTitleBgmGain;
+                        break;
+                }
+                break;
+
+            case GameManager.Scene.MainGame:
+                switch (mode)
+                {
+                    case TitleManager.Mode.Normal:
+                        _audioSourceBGM.clip = _normalGameBGM;
+                        _audioSourceBGM.volume = GameData._bgmVolume * _normalGameBgmGain;
+                        break;
+                    case TitleManager.Mode.Extra:
+                        _audioSourceBGM.clip = _extraGameBGM;
+                        _audioSourceBGM.volume = GameData._bgmVolume * _extraGameBgmGain;
+                        break;
+                }
+                break;
+        }
+        _audioSourceBGM.Play();
     }
 }

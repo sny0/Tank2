@@ -5,21 +5,28 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public GameObject _bulletPrefab; // 発射する弾
-    public float _speed = 5.0f; // 機体の移動スピード
+    [SerializeField]
+    private GameObject _bulletPrefab; // 発射する弾
+    
+    [SerializeField]
+    private GameObject _superBulletPrefab; 
+    
+    [SerializeField]
+    private float _speed = 5.0f; // 機体の移動スピード
 
     private Rigidbody2D _rb;
     private GameObject _battery; // 砲台
     
     [SerializeField]
     private float _bulletLockTime = 1.0f;
-    public int _maxBulletsOnScreen = 5; // 弾を画面に出せる最大数
     
     [SerializeField]
     private float _batteryLength = 0.5f; // 砲台の長さ
     private float _lastShotTime = 0.0f;
     private float _time = 0.0f;
-    public int _bulletNum = 0;
+    private int _bulletNum = 0;
+
+    public int BulletNum => _bulletNum;
 
     private bool _isPaused = false;
     private bool _startPaused = false;
@@ -121,10 +128,21 @@ public class Player : MonoBehaviour
     }
 
     void Shoot(){
-        if(_lastShotTime >= _bulletLockTime && _bulletNum < _maxBulletsOnScreen)
+        if(_lastShotTime >= _bulletLockTime && _bulletNum < GameData._maxBulletRemain)
         {
             Debug.Log("Shot!!");
-            GameObject bullet = Instantiate(_bulletPrefab, transform.position + _batteryLength * new Vector3(Mathf.Cos(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), 0.0f), _battery.transform.rotation);
+
+            GameObject bullet;
+
+            if (GameData._isNormalBullet)
+            {
+                bullet = Instantiate(_bulletPrefab, transform.position + _batteryLength * new Vector3(Mathf.Cos(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), 0.0f), _battery.transform.rotation);
+            }
+            else
+            {
+                bullet = Instantiate(_superBulletPrefab, transform.position + _batteryLength * new Vector3(Mathf.Cos(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(_battery.transform.rotation.eulerAngles.z * Mathf.Deg2Rad), 0.0f), _battery.transform.rotation);
+            }
+
             _bulletNum++;
             _lastShotTime = 0.0f;
             Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -164,6 +182,10 @@ public class Player : MonoBehaviour
         Instantiate(_explosion, transform.position, transform.rotation);
     }
 
+    public void ReduceBullet()
+    {
+        _bulletNum--;
+    }
 
     public bool isAlive()
     {

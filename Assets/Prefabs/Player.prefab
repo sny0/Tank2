@@ -144,7 +144,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5066824088447359434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -264,11 +264,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 2993762926168516143, guid: 07accee91907d6d4385c3573ca488fe0, type: 3}
+  _superBulletPrefab: {fileID: 3000679987625152410, guid: c2ff5c25080f95e419bbd7e9450a5c0f, type: 3}
   _speed: 2
   _bulletLockTime: 0.3
-  _maxBulletsOnScreen: 5
   _batteryLength: 1
-  _bulletNum: 0
   _explosion: {fileID: 9184625550049570847, guid: 39f003bd5cc022f46b59bec6a3e96619, type: 3}
   _cursol: {fileID: 397756445561150646, guid: 853ab7963934a794e96a51ba56f08b33, type: 3}
   _circle: {fileID: 1303087771763902668, guid: dfa8a0eca21c0404b9e4536730bfd0c4, type: 3}

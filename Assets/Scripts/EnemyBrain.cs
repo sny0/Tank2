@@ -50,11 +50,18 @@ public class EnemyBrain : TankBrain
     [SerializeField]
     private Vector3 _bikkuriOffset;
 
+    private SpriteRenderer _sonarSpriteRenderer = null;
+
+    [SerializeField]
+    private Material _searchingMaterial;
+
+    [SerializeField]
+    private Material _attackingMaterial;
+
     protected enum DetectedSensor
     {
         None,
         Scope,
-     
         Sonar
     }
 
@@ -69,7 +76,7 @@ public class EnemyBrain : TankBrain
     protected EnemyState _enemyState;
 
     [SerializeField]
-    private float _timeUntilLossOfSight = 0.5f;
+    private float _timeUntilLossOfSight = 2f;
 
     private float _lossOfSightTimer = 0f;
 
@@ -90,6 +97,8 @@ public class EnemyBrain : TankBrain
             Debug.Log("PlayerÇ™å©Ç¬Ç©ÇËÇ‹ÇπÇÒÇ≈ÇµÇΩÅB");
         }
 
+        _sonarSpriteRenderer = transform.Find("sonarEffect").gameObject.GetComponent<SpriteRenderer>();
+
         base.Start();
         _enemyState = EnemyState.Searching;
         _detectedSensor = DetectedSensor.None;
@@ -107,6 +116,7 @@ public class EnemyBrain : TankBrain
     public override void Think()
     {
         UpdateState();
+        UpdateEffect();
         base.Think();
     }
 
@@ -115,20 +125,29 @@ public class EnemyBrain : TankBrain
         switch (_enemyState)
         {
             case EnemyState.Searching:
-                //_isFindPlayer = false;
                 Search();
                 break;
 
             case EnemyState.Attacking:
-                //if (!_isFindPlayer && _canFindPlayer)
-                //{
-                //    FoundPlayer();
-
-                //}
                 Attack();
                 break;
         }
     }
+
+    public void UpdateEffect()
+    {
+        switch (_enemyState)
+        {
+            case EnemyState.Searching:
+                _sonarSpriteRenderer.material = _searchingMaterial;
+                break;
+
+            case EnemyState.Attacking:
+                _sonarSpriteRenderer.material = _attackingMaterial;
+                break;
+        }
+    }
+
 
     protected void Search()
     {

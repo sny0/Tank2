@@ -177,7 +177,7 @@ public class Bullet : MonoBehaviour
             Player player = _parent.GetComponent<Player>();
             if(player != null)
             {
-                player._bulletNum--;
+                player.ReduceBullet();
             }
         }
         _mm.UnRegister(this);
