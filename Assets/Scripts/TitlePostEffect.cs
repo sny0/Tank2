@@ -17,10 +17,10 @@ public class TitlePostEffect : MonoBehaviour
     private Material _distortMaterial;
 
     [SerializeField]
-    private Material _distanceFeildMaterial;
+    private Material _scanlinesAndStripesMaterial;
 
     [SerializeField]
-    private Material _postEffectMaterial;
+    private Material _brownTubeMaterial;
 
     private RenderTexture _noiseTexture;
 
@@ -84,10 +84,10 @@ public class TitlePostEffect : MonoBehaviour
             case TitleManager.Mode.Normal:
                 //Graphics.Blit(source, _distortTexture, _distortMaterial);
 
-                Graphics.Blit(source, _intermediateTexture, _distanceFeildMaterial);
+                Graphics.Blit(source, _intermediateTexture, _scanlinesAndStripesMaterial);
                 //Graphics.Blit(_distortTexture, _intermediateTexture, _distanceFeildMaterial);
 
-                Graphics.Blit(_intermediateTexture, destination, _postEffectMaterial);
+                Graphics.Blit(_intermediateTexture, destination, _brownTubeMaterial);
                 break;
 
             case TitleManager.Mode.Extra:
@@ -111,9 +111,9 @@ public class TitlePostEffect : MonoBehaviour
 
                 Graphics.Blit(_mixedTexture, _distortTexture, _distortMaterial);
 
-                Graphics.Blit(_distortTexture, _intermediateTexture, _distanceFeildMaterial);
+                Graphics.Blit(_distortTexture, _intermediateTexture, _scanlinesAndStripesMaterial);
 
-                Graphics.Blit(_intermediateTexture, destination, _postEffectMaterial);
+                Graphics.Blit(_intermediateTexture, destination, _brownTubeMaterial);
                 break;
         }
     }

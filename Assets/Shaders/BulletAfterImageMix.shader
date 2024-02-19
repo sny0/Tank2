@@ -1,4 +1,4 @@
-Shader "Unlit/BulletAfterImagaMix"
+Shader "Unlit/BulletAfterImageMix"
 {
     Properties
     {

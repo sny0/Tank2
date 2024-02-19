@@ -486,9 +486,9 @@ Canvas:
   m_GameObject: {fileID: 539235944}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_RenderMode: 1
+  m_Camera: {fileID: 4619309778518597373}
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -1052,5 +1052,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b68a07e535d156a45987a5aa8f700eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distanceFieldMaterial: {fileID: 2100000, guid: 99201c49be11ad54ea185baf3fdd8d87, type: 2}
-  _postEffectMaterial: {fileID: 2100000, guid: 9d590ae0a335c094197d6e56dc0666d1, type: 2}
+  _scanlinesAndStripesMaterial: {fileID: 2100000, guid: 99201c49be11ad54ea185baf3fdd8d87, type: 2}
+  _brownTubeMaterial: {fileID: 2100000, guid: 9d590ae0a335c094197d6e56dc0666d1, type: 2}
+  _distortMaterial: {fileID: 2100000, guid: 17a35ede541d8774a9147fd62c33e48d, type: 2}

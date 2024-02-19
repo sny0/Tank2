@@ -134,10 +134,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha9)){
-            GameData._stage = 9;
-            SceneManager.LoadScene("Stage9");
-        }
         //Debug.Log(GameData._remain);
         _remain = GameData._remain;
         _stage = GameData._stage;

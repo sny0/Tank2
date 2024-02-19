@@ -5615,8 +5615,8 @@ MonoBehaviour:
   _noiseMaterial: {fileID: 2100000, guid: 39b70d6e56d6d39489749163147d8691, type: 2}
   _mixMaterial: {fileID: 2100000, guid: ad3ed8ab149d4684c92afea6fec992e1, type: 2}
   _distortMaterial: {fileID: 2100000, guid: 17a35ede541d8774a9147fd62c33e48d, type: 2}
-  _distanceFeildMaterial: {fileID: 2100000, guid: 99201c49be11ad54ea185baf3fdd8d87, type: 2}
-  _postEffectMaterial: {fileID: 2100000, guid: 9d590ae0a335c094197d6e56dc0666d1, type: 2}
+  _scanlinesAndStripesMaterial: {fileID: 2100000, guid: 99201c49be11ad54ea185baf3fdd8d87, type: 2}
+  _brownTubeMaterial: {fileID: 2100000, guid: 9d590ae0a335c094197d6e56dc0666d1, type: 2}
   _noiseTime: 3
   _noiseToCleanTime: 3
   _minNoiseRate: 0.2

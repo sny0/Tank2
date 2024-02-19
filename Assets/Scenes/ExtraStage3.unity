@@ -808,6 +808,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4943196226990083785, guid: da6883537c41c9b48925071ef1d9e7a7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da6883537c41c9b48925071ef1d9e7a7, type: 3}
 --- !u!20 &703636777 stripped
@@ -2723,8 +2727,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mixMaterial: {fileID: 2100000, guid: 3e41c63f09583124e82d7c4967b7aa23, type: 2}
-  _distanceFieldMaterial: {fileID: 2100000, guid: 99201c49be11ad54ea185baf3fdd8d87, type: 2}
-  _postEffectMaterial: {fileID: 2100000, guid: 9d590ae0a335c094197d6e56dc0666d1, type: 2}
+  _scanlinesAndStripesMaterial: {fileID: 0}
+  _brownTubeMaterial: {fileID: 0}
   _bulletAfterImageTexture: {fileID: 8400000, guid: bf7a71e8b59609c46bf4a4ba86932ec9, type: 2}
 --- !u!1001 &5033209384718395894
 PrefabInstance:
