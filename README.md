@@ -14,7 +14,7 @@
 | 弾の発射 | 左クリック |
 
 # 拘ったポイント
-[ここを参照されたし](http://localhost:3000/my-docusaurus/docs/tank2)
+[ここを参照されたし](https://sny0.github.io/my-docusaurus/docs/tank2)
 
 # 作成環境
 - ゲームエンジン：Unity(ver. 2021.3.16f1)
